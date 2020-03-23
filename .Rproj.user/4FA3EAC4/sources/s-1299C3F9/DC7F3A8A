@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3556918160",
+    "hash" : "3107282607",
     "id" : "DC7F3A8A",
-    "lastKnownWriteTime" : 1584963680,
-    "last_content_update" : 1584963680311,
+    "lastKnownWriteTime" : 1584963879,
+    "last_content_update" : 1584963879992,
     "path" : "~/Dropbox/PackageDev/SURGE/README.Rmd",
     "project_path" : "README.Rmd",
     "properties" : {
-        "cursorPosition" : "41,16",
-        "scrollLine" : "35"
+        "cursorPosition" : "54,71",
+        "scrollLine" : "36"
     },
     "read_only" : false,
     "read_only_alternatives" : [

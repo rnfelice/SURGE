@@ -47,5 +47,6 @@ And then use that curve info to import the data and make all the curves
 have the same number of points
 
 ``` r
-subsampled.lm <- import_chkpt_data()
+setwd(ptsfolder)
+subsampled.lm <- import_chkpt_data(ptslist, my_curves, subsampl = TRUE)
 ```
