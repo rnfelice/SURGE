@@ -12,7 +12,11 @@ create_curve_info(curvedata, n_fixed)
 \item{n_fixed}{a number indicating how many landmarks are fixed anatomical landmarks}
 }
 \value{
-The sum of \code{x} and \code{y}.
+output contains the necessary information to subsample curves, and the identity of each curve for sliding
+\item{Curves}{a list of curves with the landmarks that begin and end each curve}
+\item{Curve.in}{the same list of curves without the landmarks that begin and end each}
+\item{Sliding.LMs}{an integer vector of all the points that are sliding semilandmarks on curves}
+\item{Fixed}{an integer vector of all the points that are fixed landmarks that are not allowed to slide}
 }
 \description{
 Create curve info object

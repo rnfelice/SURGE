@@ -2,13 +2,24 @@
 #'
 #' @param curvedata a dataframe or tibble with columns "lm1", "lm2" and "ptswanted".
 #' @param n_fixed a number indicating how many landmarks are fixed anatomical landmarks
-#' @return The sum of \code{x} and \code{y}.
+#' @return output contains the necessary information to subsample curves, and the identity of each curve for sliding
+#' \item{Curves}{a list of curves with the landmarks that begin and end each curve}
+#' \item{Curve.in}{the same list of curves without the landmarks that begin and end each}
+#' \item{Sliding.LMs}{an integer vector of all the points that are sliding semilandmarks on curves}
+#' \item{Fixed}{an integer vector of all the points that are fixed landmarks that are not allowed to slide}
 #' @examples
 #' my_curvedata <- read_csv("curvedatafile.csv")
 #' my_curves <- create_curve_info(curvedata = my_curvedata, n_fixed = 32)
 
 create_curve_info<-function(curvedata, n_fixed){
   #define the curves using the 'curvedata' object
+  if (class(n_fixed) != "numeric"){
+    stop("n_fixed must be a number")
+  }
+  c.names <-  c("lm1","lm2","ptswanted")
+  if (length(setdiff(col.names, colnames(cdat))) != 0)
+  {stop("curvedata must contain columns lm1 lm2 and ptswanted ")
+  }
   fixed <- c(1:n_fixed)
   subsampled.curve<-sapply(paste("SC",c(1:nrow(curvedata)),sep=""),function(x) NULL)
   subsampled.curve[[1]]<-c(curvedata$lm1[1],((length(fixed)+1):(length(fixed)+curvedata$ptswanted[1])),curvedata$lm2[1])

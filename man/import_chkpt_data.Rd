@@ -20,7 +20,7 @@ If \code{subsample = TRUE}, returns a 3D array containing imported XYZ coordinat
 Import PTS files from Checkpoint
 }
 \examples{
-my_curvedata <- read_csv("curvedatafile.csv")
+my_curvedata <- read_csv("curvedatafile.csv") #read data
 my_curves <- create_curve_info(curvedata = my_curvedata, n_fixed = 32)
 import_chkpt_data(ptslist = filenames, curveinfo = my_curves, subsampl = TRUE)
 }
