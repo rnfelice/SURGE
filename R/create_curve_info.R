@@ -17,16 +17,17 @@ create_curve_info<-function(curvedata, n_fixed){
     stop("n_fixed must be a number")
   }
   c.names <-  c("lm1","lm2","ptswanted")
-  if (length(setdiff(col.names, colnames(cdat))) != 0)
+  if (length(setdiff(c.names, colnames(curvedata))) != 0)
   {stop("curvedata must contain columns lm1 lm2 and ptswanted ")
   }
   fixed <- c(1:n_fixed)
   subsampled.curve<-sapply(paste("SC",c(1:nrow(curvedata)),sep=""),function(x) NULL)
   subsampled.curve[[1]]<-c(curvedata$lm1[1],((length(fixed)+1):(length(fixed)+curvedata$ptswanted[1])),curvedata$lm2[1])
+  if(nrow(curvedata)!=1){
   for (i in 2:length(subsampled.curve)){
     subsampled.curve[[i]]<-c(curvedata$lm1[i],((max(unlist(subsampled.curve))+1):(max(unlist(subsampled.curve))+curvedata$ptswanted[i])),curvedata$lm2[i])
   }
-
+}
   subsampled.curve.in<-subsampled.curve
   for(i in 1:length(subsampled.curve.in)){
     subsampled.curve.in[[i]]<-tail(head(subsampled.curve[[i]],-1),-1)
