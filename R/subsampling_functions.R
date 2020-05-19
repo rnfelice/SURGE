@@ -1,4 +1,6 @@
-#subsampling code written by Leo Bitton-Divet
+#' cursub.closer
+#' @export
+#' @author Léo Botton-Divet
 
 cursub.closer<-function(cur,req)
 {
@@ -42,6 +44,9 @@ subsampl.closer<-function(matlm,curlist,required,fix)
 ############################################################################
 ##                    RESAMPLING AVEC INTEPOLATION                        ##
 ############################################################################
+#' cursub.interpo
+#' @export
+#' @author Léo Botton-Divet
 
 cursub.interpo<-function(cur,req)
 {
@@ -100,6 +105,10 @@ cursub.interpo<-function(cur,req)
   PTS
 }
 
+#' sumbsampl.inter
+#' @export
+#' @author Léo Botton-Divet
+
 ## extension à une liste de courbes et de nombre de points requis
 subsampl.inter<-function(matlm,curlist,required,fix)
 {
@@ -125,6 +134,9 @@ subsampl.inter<-function(matlm,curlist,required,fix)
   output
 }
 
+#' subsampl.inter2
+#' @export
+#' @author Léo Botton-Divet
 
 subsampl.inter2<-function(matlm,curlist,required,fix)
 {

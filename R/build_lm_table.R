@@ -1,15 +1,18 @@
-##' Interactively
+##' Interactively Make Landmark Synonymy Table
 #'
-#' @param ptslist a character vector of file names indicating the pts files to be imported
-#' @param curveinfo the output of the function \code{create_curve_info}.
-#' @param subsample a logical value specifying whether or not to subsample the semilandmark curves to equal lengths
-#' @return If \code{subsample = TRUE}, returns a 3D array containing imported XYZ coordinate data, compatible with geomorph analyses. If \code{subsample = FALSE}, returns a tibble of coordinate data.
+#' @param target_spec a p x 3 matrix of 3d landmark data for the template or specimen that has the correct landmarking scheme
+#' @param original_spec a matrix of 3d landmarks representing the landmarking scheme to be changed
+#' @param description a character vector giving names or descriptions for each landmark in the target template
+#' @param sub_num a numerical vector giving numbers for each landmark in the target template, ideally per-curve or per-patch
+#' @return a table
 #'
 #' @export
 #' @examples
-#' my_curvedata <- read_csv("curvedatafile.csv") #read data
-#' my_curves <- create_curve_info(curvedata = my_curvedata, n_fixed = 32)
-#' import_chkpt_data(ptslist = filenames, curveinfo = my_curves, subsampl = TRUE)
+#' my_lm_table<-build_lm_table(target_spec = bird_lm_curves[,,1],
+#' original_spec = croclms[,,1],
+#' description = birdmoduledefs$description,
+#' sub_num = birdmoduledefs$landmark_designation,
+#' begin=1)
 
 build_lm_table<-function(target_spec, original_spec, description, sub_num, begin=1){
   lm_synonyms<-tibble(ptnum = c(1:dim(target_spec)[1]), description=description, sub_num=sub_num, original_num =rep(0,dim(target_spec)[1]))
