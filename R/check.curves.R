@@ -5,7 +5,7 @@
 #' @return just used inside of \code{import_chkpt_data} really
 
 
-check_curves <- function(lm.tibble,ncurves){
+check_curves <- function(lm.tibble,ncurves,filenames){
   uniques <- lm.tibble %>% group_by(spec.id) %>% filter(class == "C")
   missinglist<-c()
   extraslist<-c()

@@ -30,7 +30,7 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
 
   pts_tibble <- pts_tibble %>% mutate(., id = as.factor(id)) %>%
     rename(., index = V1, X = V2, Y = V3, Z = V4) #rename the coordinate data columns
-  check_curves(pts_tibble, ncurves=length(curveinfo$Curves))
+  check_curves(pts_tibble, ncurves=length(curveinfo$Curves),filenames=filenames)
   if(subsampl==FALSE){
     return(pts_tibble)
   }
