@@ -40,10 +40,18 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE){
 
     #convert the tibble to a 3D array compatable with geomorph
     pts_tibble_tmp <- pts_tibble%>%filter(.,class=="S")%>%group_by(spec.id)%>%select(.,X,Y,Z)%>%nest()%>%transpose()
+    fixed_counts<-list()
+    for(i in 1:length(pts_tibble_tmp)){
+      fixed_counts[i]<-dim(pts_tibble_tmp[[i]]$data)[1]
+    }
+    wronglist<-filenames[which(unlist(fixed_counts)!=length(curveinfo$Fixed))]
+    if(length(wronglist)!=0){
+     stop(paste0("Error: ", wronglist," has the wrong number of fixed points (",unlist(fixed_counts)[which(unlist(fixed_counts)!=length(curveinfo$Fixed))],")\n"))
+      }
+
     ptsarray_tmp <- array(dim=c(length(curveinfo$Fixed),3,ntaxa))
 
-    for(i in 1:length(pts_tibble_tmp))
-    {
+    for(i in 1:length(pts_tibble_tmp)){
       ptsarray_tmp[,,i] <- as.matrix(select(pts_tibble_tmp[[i]]$data, c(X,Y,Z)))
     }
 
