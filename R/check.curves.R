@@ -1,5 +1,6 @@
 ##' Utility function to test whether there are any curves missing from specimens
 #'
+#' @export
 #' @param lm.tibble a tibble of landmark data
 #' @return just used inside of \code{import_chkpt_data} really
 
