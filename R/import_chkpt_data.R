@@ -12,7 +12,7 @@
 #' import_chkpt_data(ptslist = filenames, curveinfo = my_curves, subsampl = TRUE)
 
 
-import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE){
+import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
   #######Right here i have to chcek that the inputs have the required stuff!
 
   filenames <- ptslist
@@ -76,6 +76,9 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE){
           new.curve[c(2:dim(new.curve)[1]-1),]<-9999
         }
         this.curve[,,which.spec] <- as.matrix(new.curve)[2:(dim(new.curve)[1]-1),]
+        if(verbose==TRUE){
+        writeLines(text=paste0("Specimen ",which.spec," curve ", which.curve, " OK"))
+        }
       }
       newpts <- abind::abind(newpts, this.curve, along=1)
     }
