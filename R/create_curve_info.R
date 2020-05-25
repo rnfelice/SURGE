@@ -7,6 +7,7 @@
 #' \item{Curve.in}{the same list of curves without the landmarks that begin and end each}
 #' \item{Sliding.LMs}{an integer vector of all the points that are sliding semilandmarks on curves}
 #' \item{Fixed}{an integer vector of all the points that are fixed landmarks that are not allowed to slide}
+#' @export
 #' @examples
 #' my_curvedata <- read_csv("curvedatafile.csv")
 #' my_curves <- create_curve_info(curvedata = my_curvedata, n_fixed = 32)
