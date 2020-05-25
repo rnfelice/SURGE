@@ -17,10 +17,9 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE){
 
   filenames <- ptslist
   ntaxa <- length(filenames)
-  pts_tibble <- as_tibble()
+  pts_tibble <- tibble()
 
-  for(i in 1:length(ptslist))
-  {
+  for(i in 1:length(ptslist)) {
     specimen.tmp <- as_tibble(read.table(file=ptslist[i],skip=2,header=F,sep="")) #import a single specimen
     specimen.tmp <- specimen.tmp %>% mutate(., V1 = as.character(V1)) #convert the first row, the lm names, to characters instead of factors
     specimen.tmp <- specimen.tmp %>% mutate(.,spec.id=filenames[i]) #add a column with the specimen name
@@ -31,7 +30,7 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE){
 
   pts_tibble <- pts_tibble %>% mutate(., id = as.factor(id)) %>%
     rename(., index = V1, X = V2, Y = V3, Z = V4) #rename the coordinate data columns
-  check_curves(pts_tibble)
+  check_curves(pts_tibble, ncurves=length(curveinfo$Curves))
   if(subsampl==FALSE){
     return(pts_tibble)
   }
