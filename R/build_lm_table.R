@@ -20,15 +20,17 @@ build_lm_table<-function(target_spec, original_spec, description, sub_num, begin
   i=begin
   while (i<=dim(target_spec)[1]){
     rownames(target_spec) <- c(1:nrow(target_spec))
+    rownames(original_spec) <- c(1:nrow(original_spec))
     n <- dim(target_spec)[1]
     index <- as.numeric(rownames(target_spec))
+    index2 <- as.numeric(rownames(original_spec))
     clear3d();plot3d(target_spec,size=5,col="black",xlab="x",ylab="y",zlab="z",aspect=FALSE)
     text3d(target_spec, texts=index,cex=1,adj=c(2,1))
     points3d(target_spec[i,1],target_spec[i,2],target_spec[i,3],size=10,color="red",add=TRUE)
     next3d()
     writeLines(paste0("select landmark ", lm_synonyms$sub_num[i]," for ", lm_synonyms$description[i]))
     ids <- plot3d(original_spec,size=5,col="black",xlab="x",ylab="y",zlab="z",aspect=FALSE)
-    text3d(original_spec, texts=index,cex=1,adj=c(2,1))
+    text3d(original_spec, texts=index2,cex=1,adj=c(2,1))
     keep <- selectpoints3d(ids["data"], value= FALSE, button = "right")[2]
     points3d(original_spec[keep,1],original_spec[keep,2],original_spec[keep,3],size=10,color="blue",add=TRUE)
     continue <- readline(paste0("You selected landmark ", keep, ". OK?\n", "(return=next lm | r=preselect this lm\nn = mark as NA | s=stop viewing)\n"))

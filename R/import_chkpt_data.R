@@ -39,7 +39,7 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
     curvepoints <- length(curveinfo$Sliding.LMs)
 
     #convert the tibble to a 3D array compatable with geomorph
-    pts_tibble_tmp <- pts_tibble%>%filter(.,class=="S")%>%group_by(spec.id)%>%select(.,X,Y,Z)%>%nest()%>%transpose()
+    pts_tibble_tmp <- pts_tibble%>%filter(.,class=="S")%>%group_by(spec.id)%>%select(.,X,Y,Z)%>%nest()%>%purrr::transpose()
     fixed_counts<-list()
     for(i in 1:length(pts_tibble_tmp)){
       fixed_counts[i]<-dim(pts_tibble_tmp[[i]]$data)[1]
