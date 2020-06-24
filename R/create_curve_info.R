@@ -34,7 +34,8 @@ create_curve_info<-function(curvedata, n_fixed){
     subsampled.curve.in[[i]]<-tail(head(subsampled.curve[[i]],-1),-1)
 
   }
-
+  subsampled.curve <- lapply(subsampled.curve, as.integer)
+  subsampled.curve.in <- lapply(subsampled.curve.in, as.integer)
 
   slidings.sub<-c((max(fixed)+1):max(unlist(subsampled.curve)))
 
