@@ -39,7 +39,7 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
     curvepoints <- length(curveinfo$Sliding.LMs)
 
     #convert the tibble to a 3D array compatable with geomorph
-    pts_tibble_tmp <- pts_tibble%>%filter(.,class=="S")%>%group_by(spec.id)%>%select(.,X,Y,Z)%>%nest()%>%purrr::transpose()
+    pts_tibble_tmp <- pts_tibble%>%filter(.,class=="S")%>%group_by(spec.id)%>%dplyr::select(.,X,Y,Z)%>%nest()%>%purrr::transpose()
     fixed_counts<-list()
     for(i in 1:length(pts_tibble_tmp)){
       fixed_counts[i]<-dim(pts_tibble_tmp[[i]]$data)[1]
@@ -52,7 +52,7 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
     ptsarray_tmp <- array(dim=c(length(curveinfo$Fixed),3,ntaxa))
 
     for(i in 1:length(pts_tibble_tmp)){
-      ptsarray_tmp[,,i] <- as.matrix(select(pts_tibble_tmp[[i]]$data, c(X,Y,Z)))
+      ptsarray_tmp[,,i] <- as.matrix(dplyr::select(pts_tibble_tmp[[i]]$data, c(X,Y,Z)))
     }
 
 
@@ -66,8 +66,8 @@ import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
     for (which.curve in 1:length(curveinfo$Curve.in)){
       this.curve <- array(data=NA, dim=c(length(curveinfo$Curve.in[[which.curve]]),3,ntaxa))
       for (which.spec in 1:length(filenames)){
-        orig.curve <- pts_tibble %>% filter(.,spec.id==filenames[which.spec])%>%filter(., class=="C")%>%filter(., id==which.curve) %>% select(., X,Y,Z)
-        orig.curve.anchors <- pts_tibble %>% filter(.,spec.id==filenames[which.spec])%>%slice(c(curveinfo$Curves[[which.curve]][1],last(curveinfo$Curves[[which.curve]]))) %>% select(., X,Y,Z)
+        orig.curve <- pts_tibble %>% filter(.,spec.id==filenames[which.spec])%>%filter(., class=="C")%>%filter(., id==which.curve) %>% dplyr::select(., X,Y,Z)
+        orig.curve.anchors <- pts_tibble %>% filter(.,spec.id==filenames[which.spec])%>%slice(c(curveinfo$Curves[[which.curve]][1],last(curveinfo$Curves[[which.curve]]))) %>% dplyr::select(., X,Y,Z)
         orig.curve <- rbind(orig.curve.anchors[1,],orig.curve,orig.curve.anchors[2,])
         new.curve <- cursub.interpo(orig.curve, length(curveinfo$Curve.in[[which.curve]]))
         #this bit checks if you had ANY 9999s in this curve before subsampling.
