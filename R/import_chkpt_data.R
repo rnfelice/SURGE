@@ -3,6 +3,7 @@
 #' @param ptslist a character vector of file names indicating the pts files to be imported
 #' @param curveinfo the output of the function \code{create_curve_info}.
 #' @param subsample a logical value specifying whether or not to subsample the semilandmark curves to equal lengths
+#' @param named_lms a logical value to tell the function if you have used the default names for landmarks (S.1, S.2, etc) or manually named them. If you used custom names you must set this to TRUE
 #' @return If \code{subsample = TRUE}, returns a 3D array containing imported XYZ coordinate data, compatible with geomorph analyses. If \code{subsample = FALSE}, returns a tibble of coordinate data.
 #'
 #' @export
@@ -12,18 +13,48 @@
 #' import_chkpt_data(ptslist = filenames, curveinfo = my_curves, subsampl = TRUE)
 
 
-import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE){
+import_chkpt_data<-function(ptslist, curveinfo, subsampl=TRUE, verbose=FALSE, named_lms = FALSE){
   #######Right here i have to chcek that the inputs have the required stuff!
 
   filenames <- ptslist
   ntaxa <- length(filenames)
   pts_tibble <- tibble()
+  if (named_lms == T){
+   for(i in 1:length(ptslist)) {
+    ncol <- max(count.fields(ptslist[i], sep = ""))
+    specimen.tmp <- read.table(ptslist[i],skip=2,header=F,sep="",fill=T,col.names=paste0('V', seq_len(ncol)))
+    specimen.tmp <- apply(specimen.tmp, 2, function(x) gsub("^$|^ $", NA, x))
+    specimen.tmp2 <- tibble()
 
+    for (j in curveinfo$Fixed){
+      single_row<-specimen.tmp[j,][!is.na(specimen.tmp[j,])]
+      coords <- as.numeric(tail(single_row,3L))
+      name <- paste0("S.",j)
+      clean_row <- c(name, coords)
+      specimen.tmp2 <- rbind(specimen.tmp2, clean_row)
+    }
+    for (k in (max(curveinfo$Fixed)+1):nrow(specimen.tmp)){
+      single_row<-specimen.tmp[k,][!is.na(specimen.tmp[k,])]
+      coords <- as.numeric(tail(single_row,3L))
+      name <- single_row[1]
+      clean_row <- c(name, coords)
+      specimen.tmp2 <- rbind(specimen.tmp2, clean_row)
+    }
+    colnames(specimen.tmp2)<-paste0("V", c(1:4))
+    specimen.tmp <- as_tibble(specimen.tmp2)
+    specimen.tmp <- specimen.tmp %>% mutate(., V1 = as.character(V1), V2 = as.numeric(V2),V3 = as.numeric(V3),V4 = as.numeric(V4)) #convert the first row, the lm names, to characters instead of factors
+    specimen.tmp <- specimen.tmp %>% mutate(.,spec.id=filenames[i]) #add a column with the specimen name
+    pts_tibble<-bind_rows(pts_tibble,specimen.tmp) #paste it to the end of the tibble with the rest of the specimens
+   }
+  }
+  else{
   for(i in 1:length(ptslist)) {
+
     specimen.tmp <- as_tibble(read.table(file=ptslist[i],skip=2,header=F,sep="")) #import a single specimen
     specimen.tmp <- specimen.tmp %>% mutate(., V1 = as.character(V1)) #convert the first row, the lm names, to characters instead of factors
     specimen.tmp <- specimen.tmp %>% mutate(.,spec.id=filenames[i]) #add a column with the specimen name
     pts_tibble<-bind_rows(pts_tibble,specimen.tmp) #paste it to the end of the tibble with the rest of the specimens
+  }
   }
   #this will give a warning message but its nothing to worry about
   pts_tibble <- suppressWarnings(pts_tibble %>% separate(., V1, into = c("class", "id","sub_lm"), remove = FALSE))
